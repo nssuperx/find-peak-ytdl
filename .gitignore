@@ -20,4 +20,8 @@ wheels/
 # video file
 *.mp4
 *.mkv
-*.mebm
+*.webm
+
+# tmp file
+*.csv
+*.txt
