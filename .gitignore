@@ -25,3 +25,4 @@ wheels/
 # tmp file
 *.csv
 *.txt
+tmp_*

@@ -19,9 +19,9 @@ def find_peak_time(filename: str, point: int) -> Iterable[int]:
 
 def gen_cut_info(peak_time_sec: Iterable[int], id: str) -> None:
     peak_time_span = ((t - 10, t + 10) for t in peak_time_sec)
-    time_csv = open("time.csv", "w", encoding="utf-8")
+    time_csv = open(f"{id}.csv", "w", encoding="utf-8")
     time_csv.write("start,end\n")
-    merge_list = open("merge.txt", "w", encoding="utf-8")
+    merge_list = open(f"{id}.txt", "w", encoding="utf-8")
     for a in peak_time_span:
         time_csv.write(f"{a[0]},{a[1]}\n")
         merge_list.write(f"file '{id}_{a[0]}.mp4'\n")
