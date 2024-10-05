@@ -1,0 +1,14 @@
+[project]
+name = "find-sound-peak"
+version = "0.1.0"
+description = "find sound peak"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "scipy>=1.14.1",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "ruff>=0.6.9",
+]
