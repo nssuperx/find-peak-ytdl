@@ -1,5 +1,5 @@
 # 動画idを使ってファイルの読み込みなどをしたい
-$pattern = "^.*(?:watch\?)(?:v=)?([a-zA-Z0-9-=_]+)$"
+$pattern = "^.*(?:watch\?)(?:v=)?([a-zA-Z0-9=_-]+)$"
 if ($Args[0] -match $pattern) {
     $id = $matches[1]
 } else {
@@ -26,7 +26,6 @@ ffmpeg -safe 0 -f concat -i "${id}.txt" -c copy "out-${id}.mp4"
 $shell = New-Object -ComObject Shell.Application
 $trash = $shell.NameSpace(10)
 Resolve-Path ${id}* | ForEach-Object {
-    Write-Host $_
     $trash.MoveHere($_.Path)
 }
 
