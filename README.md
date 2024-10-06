@@ -1,4 +1,6 @@
-# find-audio-peak-ytdl
+# find-peak-ytdl
+
+YouTubeの動画の音量が大きいところを数か所切り抜いてつなげる
 
 ```
 .\run.ps1 <動画url>
@@ -11,7 +13,7 @@
 - uv
 
 ```
-uv sync
+uv sync --no-dev
 ```
 
 ## docker
