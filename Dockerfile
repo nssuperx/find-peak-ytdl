@@ -1,4 +1,4 @@
-FROM debian as build
+FROM debian:stable as build
 
 WORKDIR /tmp
 
@@ -9,7 +9,7 @@ RUN curl -sSL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-sta
     tar -xf /tmp/ffmpeg.tar.xz --strip-components 1
 
 
-FROM debian
+FROM debian:stable-slim
 
 COPY --from=build /tmp/yt-dlp /usr/local/bin
 RUN chmod 755 /usr/local/bin/yt-dlp
