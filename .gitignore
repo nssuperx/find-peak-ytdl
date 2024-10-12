@@ -25,4 +25,5 @@ wheels/
 # tmp file
 *.csv
 *.txt
+*.json
 tmp_*
