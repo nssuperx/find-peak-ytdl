@@ -43,9 +43,10 @@ def find_peak_live_chat(filename: str, point: int) -> Iterable[int]:
     return (int(i) for i in chronological)
 
 
-def gen_cut_info(peak_time_sec: Iterable[int], id: str, postfix: str = "") -> None:
-    postfix = "-" + postfix if postfix != "" else ""
-    peak_time_span = ((t - 10, t + 5) for t in peak_time_sec)
+def gen_cut_info(
+    peak_time_sec: Iterable[int], id: str, postfix: str = "", before: int = 10, after: int = 5
+) -> None:
+    peak_time_span = ((t - before, t + after) for t in peak_time_sec)
     time_csv = open(f"{id}{postfix}.csv", "w", encoding="utf-8")
     time_csv.write("start,end\n")
     for start, end in peak_time_span:
@@ -58,7 +59,7 @@ def main():
     peak_time_sec = find_peak_time(id, 5)
     gen_cut_info(peak_time_sec, id)
     peak_time_sec_chat = find_peak_live_chat(id, 5)
-    gen_cut_info(peak_time_sec_chat, id, "chat")
+    gen_cut_info(peak_time_sec_chat, id, "-chat", 20, 5)
 
 
 if __name__ == "__main__":
