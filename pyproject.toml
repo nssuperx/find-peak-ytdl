@@ -8,6 +8,11 @@ dependencies = [
     "yt-find-peak",
 ]
 
+[project.optional-dependencies]
+build = [
+    "pyinstaller>=6.11.0",
+]
+
 [tool.uv]
 dev-dependencies = [
     "ruff>=0.6.9",
