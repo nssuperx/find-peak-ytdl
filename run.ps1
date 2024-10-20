@@ -6,6 +6,16 @@ if ($Args[0] -match $pattern) {
     $id = $Args[0]
 }
 
+function Clip-Video {
+    param([string]$Filename)
+    Import-Csv .\${Filename}.csv -Encoding UTF8 | ForEach-Object {
+        # エンコードしないとキーフレームの関係でずれる
+        ffmpeg -ss $($_.start) -to $($_.end) -i "${id}.mp4" -vcodec libx264 -crf 22 -acodec aac -ab 128k "${id}_$($_.start).mp4"
+        Add-Content -Path "${Filename}.txt" -Value "file '${id}_$($_.start).mp4'"
+    }
+    ffmpeg -safe 0 -f concat -i "${Filename}.txt" -c copy "out-${Filename}.mp4"
+}
+
 Push-Location $PSScriptRoot
 yt-dlp -f bv[ext*=mp4]+ba[ext*=mp4] "$id" -o "%(id)s.%(ext)s" --write-sub --sub-lang live_chat --write-info-json
 if (-not $?) {
@@ -17,24 +27,9 @@ ffmpeg -i "$id.mp4" "$id.wav"
 
 uv run main.py $id
 
-Import-Csv .\${id}.csv -Encoding UTF8 | ForEach-Object {
-    # エンコードしないとキーフレームの関係でずれる
-    ffmpeg -ss $($_.start) -to $($_.end) -i "${id}.mp4" -vcodec libx264 -crf 22 -acodec aac -ab 128k "${id}_$($_.start).mp4"
-    Add-Content -Path "${id}-sound.txt" -Value "file '${id}_$($_.start).mp4'"
-}
-ffmpeg -safe 0 -f concat -i "${id}-sound.txt" -c copy "out-sound-${id}.mp4"
-
-Import-Csv .\${id}-chat.csv -Encoding UTF8 | ForEach-Object {
-    ffmpeg -ss $($_.start) -to $($_.end) -i "${id}.mp4" -vcodec libx264 -crf 22 -acodec aac -ab 128k "${id}_$($_.start).mp4"
-    Add-Content -Path "${id}-chat.txt" -Value "file '${id}_$($_.start).mp4'"
-}
-ffmpeg -safe 0 -f concat -i "${id}-chat.txt" -c copy "out-chat-${id}.mp4"
-
-Import-Csv .\${id}-heatmap.csv -Encoding UTF8 | ForEach-Object {
-    ffmpeg -ss $($_.start) -to $($_.end) -i "${id}.mp4" -vcodec libx264 -crf 22 -acodec aac -ab 128k "${id}_$($_.start).mp4"
-    Add-Content -Path "${id}-heatmap.txt" -Value "file '${id}_$($_.start).mp4'"
-}
-ffmpeg -safe 0 -f concat -i "${id}-heatmap.txt" -c copy "out-heatmap-${id}.mp4"
+Clip-Video -Filename ${id}-sound
+Clip-Video -Filename ${id}-chat
+Clip-Video -Filename ${id}-heatmap
 
 $shell = New-Object -ComObject Shell.Application
 $trash = $shell.NameSpace(10)
