@@ -11,10 +11,12 @@ RUN curl -sSL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-sta
 
 FROM debian:stable-slim
 
-COPY --from=build /tmp/yt-dlp /usr/local/bin
-RUN chmod 755 /usr/local/bin/yt-dlp
-COPY --from=build /tmp/ffmpeg /usr/local/bin
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+# TODO: gitのインストールは避けたい
+RUN apt-get update && apt-get install -y git
+COPY --from=build /tmp/yt-dlp /usr/bin
+RUN chmod 755 /usr/bin/yt-dlp
+COPY --from=build /tmp/ffmpeg /usr/bin
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/bin/
 COPY main.py .
 COPY run.sh .
 COPY pyproject.toml .
