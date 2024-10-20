@@ -20,16 +20,21 @@ uv run main.py $id
 Import-Csv .\${id}.csv -Encoding UTF8 | ForEach-Object {
     # エンコードしないとキーフレームの関係でずれる
     ffmpeg -ss $($_.start) -to $($_.end) -i "${id}.mp4" -vcodec libx264 -crf 22 -acodec aac -ab 128k "${id}_$($_.start).mp4"
-    Add-Content -Path "${id}.txt" -Value "file '${id}_$($_.start).mp4'"
+    Add-Content -Path "${id}-sound.txt" -Value "file '${id}_$($_.start).mp4'"
 }
-ffmpeg -safe 0 -f concat -i "${id}.txt" -c copy "out-${id}.mp4"
+ffmpeg -safe 0 -f concat -i "${id}-sound.txt" -c copy "out-sound-${id}.mp4"
 
 Import-Csv .\${id}-chat.csv -Encoding UTF8 | ForEach-Object {
-    # エンコードしないとキーフレームの関係でずれる
     ffmpeg -ss $($_.start) -to $($_.end) -i "${id}.mp4" -vcodec libx264 -crf 22 -acodec aac -ab 128k "${id}_$($_.start).mp4"
     Add-Content -Path "${id}-chat.txt" -Value "file '${id}_$($_.start).mp4'"
 }
 ffmpeg -safe 0 -f concat -i "${id}-chat.txt" -c copy "out-chat-${id}.mp4"
+
+Import-Csv .\${id}-heatmap.csv -Encoding UTF8 | ForEach-Object {
+    ffmpeg -ss $($_.start) -to $($_.end) -i "${id}.mp4" -vcodec libx264 -crf 22 -acodec aac -ab 128k "${id}_$($_.start).mp4"
+    Add-Content -Path "${id}-heatmap.txt" -Value "file '${id}_$($_.start).mp4'"
+}
+ffmpeg -safe 0 -f concat -i "${id}-heatmap.txt" -c copy "out-heatmap-${id}.mp4"
 
 $shell = New-Object -ComObject Shell.Application
 $trash = $shell.NameSpace(10)
