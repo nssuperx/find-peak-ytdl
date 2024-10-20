@@ -5,14 +5,16 @@ description = "find sound peak"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "scipy>=1.14.1",
+    "yt-find-peak",
 ]
 
 [tool.uv]
 dev-dependencies = [
-    "matplotlib>=3.9.2",
     "ruff>=0.6.9",
 ]
+
+[tool.uv.sources]
+yt-find-peak = { git = "https://github.com/nssuperx/yt-find-peak", rev = "main" }
 
 [tool.ruff]
 line-length = 100
