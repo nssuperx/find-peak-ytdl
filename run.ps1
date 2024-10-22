@@ -8,6 +8,7 @@ if ($Args[0] -match $pattern) {
 
 function Clip-Video {
     param([string]$Filename)
+    New-Item "${Filename}.txt" -type file -Force 
     Import-Csv .\${Filename}.csv -Encoding UTF8 | ForEach-Object {
         # エンコードしないとキーフレームの関係でずれる
         ffmpeg -ss $($_.start) -to $($_.end) -i "${id}.mp4" -vcodec libx264 -crf 22 -acodec aac -ab 128k "${id}_$($_.start).mp4"

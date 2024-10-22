@@ -8,6 +8,7 @@ else
 fi
 
 function encode_out() {
+    echo -n > ${1}.txt
     while IFS=, read -r start end; do
         # エンコードしないとキーフレームの関係でずれる
         # 最後の </dev/null がないと1回しか実行されない
