@@ -10,9 +10,9 @@ fi
 function encode_out() {
     echo -n > ${1}.txt
     while IFS=, read -r start end; do
-        # エンコードしないとキーフレームの関係でずれる
+        # 正確な時刻より高速でカットしたいので、エンコードしない
         # 最後の </dev/null がないと1回しか実行されない
-        ffmpeg -ss $start -to $end -i "${id}.mp4" -vcodec libx264 -crf 22 -acodec aac -ab 128k "${id}_${start}.mp4" </dev/null
+        ffmpeg -ss $start -to $end -i "${id}.mp4" -c copy -copyts "${id}_${start}.mp4" </dev/null
         echo "file '${id}_${start}.mp4'" >> ${1}.txt
     done < <(tail -n +2 ${1}.csv)
     ffmpeg -safe 0 -f concat -i ${1}.txt -c copy "out-${1}.mp4"
