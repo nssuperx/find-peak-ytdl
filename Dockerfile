@@ -8,7 +8,6 @@ RUN curl -sSL https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_l
 RUN curl -sSL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz -o /tmp/ffmpeg.tar.xz && \
     tar -xf /tmp/ffmpeg.tar.xz --strip-components 1
 COPY pyproject.toml .
-COPY uv.lock .
 COPY main.py .
 RUN uv sync --no-dev --extra build
 RUN uv run pyinstaller main.py --onefile

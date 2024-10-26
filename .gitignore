@@ -27,3 +27,6 @@ wheels/
 *.txt
 *.json
 tmp_*
+
+# lock file
+uv.lock
