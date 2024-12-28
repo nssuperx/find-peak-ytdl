@@ -10,7 +10,7 @@ fi
 function encode_out() {
     echo -n > ${1}.txt
     while IFS=, read -r start end; do
-        # 正確な時刻より高速でカットしたいので、エンコードしない
+        # -copytsオプション付けたら-c copyでconcatしてもずれなくなる
         # 最後の </dev/null がないと1回しか実行されない
         ffmpeg -ss $start -to $end -i "${id}.mp4" -c copy -copyts "${id}_${start}.mp4" </dev/null
         echo "file '${id}_${start}.mp4'" >> ${1}.txt
@@ -26,13 +26,13 @@ function main() {
         exit 1
     fi
 
-    ffmpeg -i "$id.mp4" "$id.wav"
+    # ffmpeg -i "$id.mp4" "$id.wav"
 
     uv run main.py $id
 
-    encode_out ${id}-sound
+    # encode_out ${id}-sound
     encode_out ${id}-chat
-    encode_out ${id}-heatmap
+    # encode_out ${id}-heatmap
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
