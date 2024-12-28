@@ -26,7 +26,7 @@ if (-not $?) {
 }
 ffmpeg -i "$id.mp4" "$id.wav"
 
-uv run main.py $id
+uv run --no-dev .\main.py $id
 
 Clip-Video -Filename ${id}-sound
 Clip-Video -Filename ${id}-chat

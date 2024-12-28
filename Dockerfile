@@ -9,8 +9,8 @@ RUN curl -sSL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-sta
     tar -xf /tmp/ffmpeg.tar.xz --strip-components 1
 COPY pyproject.toml .
 COPY main.py .
-RUN uv sync --no-dev --extra build
-RUN uv run pyinstaller main.py --onefile
+RUN uv sync --no-dev --group build
+RUN uv run --no-dev pyinstaller main.py --onefile
 
 
 FROM debian:stable-slim
